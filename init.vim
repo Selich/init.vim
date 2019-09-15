@@ -58,15 +58,18 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'othree/jspc.vim'
 Plug 'othree/yajs.vim'
+Plug 'fatih/vim-go'
+Plug 'ryanoasis/vim-devicons'
 Plug 'moll/vim-node'
 Plug 'mxw/vim-jsx'
 Plug 'jdkanani/vim-material-theme'
 Plug 'mattn/emmet-vim'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'vim-syntastic/syntastic'
+"Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
+Plug 'yuttie/comfortable-motion.vim'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
@@ -75,11 +78,10 @@ Plug 'benmills/vimux'
 Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
 
-
-
-
-
 call plug#end()
+
+
+
 
 let g:ctrlp_by_filename = 0
 let g:ctrlp_max_files = 0
@@ -87,28 +89,47 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 " Airline "
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#ale#enabled = 1
+"let g:airline_theme='monochrome'
 let g:airline_theme='minimalist'
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+set statusline=%{LinterStatus()}
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '%s [%severity%]'
+let g:ale_sign_error = '⨉'
+let g:ale_sign_warning = '⚠'
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
+let g:ale_completion_enabled = 1
+let g:ale_set_highlights = 0
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:ale_warn_about_trailing_whitespace = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_list_window_size = 5
 
-" Syntastic "
-" Synt
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:used_javascript_libs = 'underscore,backbone,react,rambda'
-call neomake#configure#automake('w')
-
-
-let g:deoplete#enable_at_startup = 1
 " ALE
 let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \    'javascript': ['eslint', 'prettier'],
 \    'vue': ['eslint'],
 \    'scss': ['prettier']
@@ -120,9 +141,30 @@ let g:ale_linters = {
 \   'vue': ['eslint']
 \}
 
-let g:ale_sign_warning = '.'
-let g:ale_completion_enabled = 1
 
+
+nnoremap <silent> K :ALEHover<CR>
+nnoremap <silent> gd :ALEGoToDefinition<CR>
+nnoremap <silent> gvd :ALEGoToDefinitionInVSplit<CR>
+nnoremap <silent> gr :ALEFindReferences<CR>
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+" Syntastic "
+" Synt
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_quiet_messages = { "type": "style" }
+
+let g:used_javascript_libs = 'underscore,backbone,react,rambda'
+call neomake#configure#automake('w')
+
+
+let g:deoplete#enable_at_startup = 1
 
 "
 " EMMET 
@@ -171,3 +213,45 @@ let g:lightline = {
       \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
+
+
+let g:comfortable_motion_no_default_key_mappings = 1
+let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
+nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
+nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+
+" loading the plugin
+let g:webdevicons_enable = 1
+" adding the flags to NERDTree
+let g:webdevicons_enable_nerdtree = 1
+" adding the custom source to unite
+let g:webdevicons_enable_unite = 1
+" adding the column to vimfiler
+let g:webdevicons_enable_vimfiler = 1
+" adding to vim-airline's tabline
+let g:webdevicons_enable_airline_tabline = 1
+" adding to vim-airline's statusline
+let g:webdevicons_enable_airline_statusline = 1
+" ctrlp glyphs
+let g:webdevicons_enable_ctrlp = 1
+" adding to vim-startify screen
+let g:webdevicons_enable_startify = 1
+" adding to flagship's statusline
+let g:webdevicons_enable_flagship_statusline = 1
+" turn on/off file node glyph decorations (not particularly useful)
+let g:WebDevIconsUnicodeDecorateFileNodes = 1
+" use double-width(1) or single-width(0) glyphs
+" only manipulates padding, has no effect on terminal or set(guifont) font
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
+" whether or not to show the nerdtree brackets around flags
+let g:webdevicons_conceal_nerdtree_brackets = 1
+" the amount of space to use after the glyph character (default ' ')
+let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
+" Force extra padding in NERDTree so that the filetype icons line up vertically
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+" Adding the custom source to denite
+let g:webdevicons_enable_denite = 1
+
+
