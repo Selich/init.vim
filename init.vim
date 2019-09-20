@@ -77,7 +77,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'benmills/vimux'
 Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'francoiscabrol/ranger.vim'
 
+			
 call plug#end()
 
 
@@ -188,6 +191,20 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 map <C-\> :NERDTreeToggle<CR>
 map <C-]> :Vista!!<CR>
 
+nnoremap <A-F1> 1gt
+nnoremap <A-F2> 2gt
+nnoremap <A-F3> 3gt
+nnoremap <A-F4> 4gt
+nnoremap <A-F5> 5gt
+nnoremap <A-F6> 6gt
+nnoremap <A-F7> 7gt
+nnoremap <A-F8> 8gt
+nnoremap <A-F9> 9gt
+nnoremap <A-F0> 10gt
+
+nnoremap <C-k> :tabnext<CR>
+nnoremap <C-j> :tabprev<CR>
+
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
@@ -253,5 +270,9 @@ let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 " Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
+
+
+
+let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
 
 
