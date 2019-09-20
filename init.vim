@@ -79,11 +79,16 @@ Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
+Plug 'vimlab/split-term.vim'
+
+
 
 			
 call plug#end()
 
 
+
+let g:split_term_default_shell = "fish"
 
 
 let g:ctrlp_by_filename = 0
