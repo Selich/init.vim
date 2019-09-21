@@ -1,4 +1,4 @@
-syntax on 
+syntax on
 set number
 set tabstop=4
 set softtabstop=0
@@ -28,18 +28,22 @@ set undolevels=1000
 set undoreload=10000
 set splitbelow
 set splitright
-set hidden                        
-set nostartofline                
+set hidden
+set nostartofline
 set synmaxcol=512                     " don't syntax highlight long lines
 set showtabline=0                     " start OFF, toggle =2 to show tabline
 set laststatus=2                      " always show all statuslines
 " This is slow on some terminals and often gets hidden by msgs so leave it off
 set noshowcmd
-set noshowmode    
+set noshowmode
 
 if has("gui_running")
 	    set guifont=Fira Code\ 10
 endif
+
+"
+" PLUG
+"
 
 call plug#begin('~/.nvim/plugged')
 
@@ -79,28 +83,35 @@ Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
+
+Plug 'edkolev/tmuxline.vim'
+
+" Tmux
+Plug 'jpalardy/vim-slime'
+Plug 'christoomey/vim-tmux-navigator'
+
+" Neoterminal
+Plug 'jalvesaq/vimcmdline'
 Plug 'vimlab/split-term.vim'
 
+" Formatting
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
+Plug 'junegunn/vim-easy-align'
 
+Plug 'danro/rename.vim', { 'on': 'Rename' }
+Plug 'rakr/vim-one'
+Plug 'vimlab/split-term.vim'
+" Python
+Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
+Plug 'alvan/vim-closetag'
+Plug 'jpalardy/vim-slime'
 
-			
 call plug#end()
 
-
-
-let g:split_term_default_shell = "fish"
-
-
-let g:ctrlp_by_filename = 0
-let g:ctrlp_max_files = 0
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-
-" Airline "
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#ale#enabled = 1
-"let g:airline_theme='monochrome'
-let g:airline_theme='minimalist'
+"
+" FUNCTIONS
+"
 
 function! LinterStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
@@ -115,10 +126,31 @@ function! LinterStatus() abort
     \)
 endfunction
 
-set statusline=%{LinterStatus()}
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
 
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+"
+" GLOBALS
+"
+
+
+" Split term
+let g:split_term_default_shell = "fish"
+
+" Ctrl P
+let g:ctrlp_by_filename = 0
+let g:ctrlp_max_files = 0
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+" Airline "
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#ale#enabled = 1
+"let g:airline_theme='monochrome'
+let g:airline_theme='minimalist'
+
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '%s [%severity%]'
@@ -135,7 +167,9 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_list_window_size = 5
 
+"
 " ALE
+"
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \    'javascript': ['eslint', 'prettier'],
@@ -149,12 +183,6 @@ let g:ale_linters = {
 \   'vue': ['eslint']
 \}
 
-
-
-nnoremap <silent> K :ALEHover<CR>
-nnoremap <silent> gd :ALEGoToDefinition<CR>
-nnoremap <silent> gvd :ALEGoToDefinitionInVSplit<CR>
-nnoremap <silent> gr :ALEFindReferences<CR>
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -175,7 +203,8 @@ call neomake#configure#automake('w')
 let g:deoplete#enable_at_startup = 1
 
 "
-" EMMET 
+" EMMET
+"
 
 let g:user_emmet_leader_key='<Tab>'
 let g:user_emmet_settings = {
@@ -185,36 +214,10 @@ let g:user_emmet_settings = {
   \}
 
 "autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
-"
-"
-"
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 
-
-map <C-\> :NERDTreeToggle<CR>
-map <C-]> :Vista!!<CR>
-
-nnoremap <A-F1> 1gt
-nnoremap <A-F2> 2gt
-nnoremap <A-F3> 3gt
-nnoremap <A-F4> 4gt
-nnoremap <A-F5> 5gt
-nnoremap <A-F6> 6gt
-nnoremap <A-F7> 7gt
-nnoremap <A-F8> 8gt
-nnoremap <A-F9> 9gt
-nnoremap <A-F0> 10gt
-
-nnoremap <C-k> :tabnext<CR>
-nnoremap <C-j> :tabprev<CR>
-
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-set statusline+=%{NearestMethodOrFunction()}
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 let g:vista_fzf_preview = ['right:50%']
@@ -225,6 +228,7 @@ let g:vista#renderer#icons = {
 \  }
 
 
+" Lightline
 
 let g:lightline = {
       \ 'active': {
@@ -238,11 +242,7 @@ let g:lightline = {
 
 
 let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
-nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
-nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
-nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+let g:comfortable_motion_impulse_multiplier = 1
 
 " loading the plugin
 let g:webdevicons_enable = 1
@@ -278,6 +278,74 @@ let g:webdevicons_enable_denite = 1
 
 
 
+" Ranger
 let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
+
+" Tmuxline
+
+if exists('$TMUX')
+	let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+	let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+let g:slime_target = "tmux"
+	let g:slime_python_ipython = 1
+
+let g:tmuxline_theme = 'vim_statusline_2'
+let g:airline#extensions#tmuxline#enabled = 0
+let g:tmuxline_powerline_separators = 0
+let g:tmuxline_preset = {
+	\'a'    : '#S',
+	\'cwin' : '#I|#W:#P',
+	\'x'    : '%a',
+	\'y'    : '#W %R',
+	\'z'    : '#H'
+}
+
+"
+" STATUSLINE
+"
+
+set statusline+=%{NearestMethodOrFunction()}
+set statusline=%{LinterStatus()}
+
+
+"
+" MAPPING
+"
+
+nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
+nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+
+nnoremap <silent> K :ALEHover<CR>
+nnoremap <silent> gd :ALEGoToDefinition<CR>
+nnoremap <silent> gvd :ALEGoToDefinitionInVSplit<CR>
+nnoremap <silent> gr :ALEFindReferences<CR>
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+map <C-\> :NERDTreeToggle<CR>
+map <C-]> :Vista!!<CR>
+
+nnoremap <A-F1> 1gt
+nnoremap <A-F2> 2gt
+nnoremap <A-F3> 3gt
+nnoremap <A-F4> 4gt
+nnoremap <A-F5> 5gt
+nnoremap <A-F6> 6gt
+nnoremap <A-F7> 7gt
+nnoremap <A-F8> 8gt
+nnoremap <A-F9> 9gt
+nnoremap <A-F0> 10gt
+
+nnoremap <C-k> :tabnext<CR>
+nnoremap <C-j> :tabprev<CR>
+
 
 
