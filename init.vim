@@ -292,7 +292,7 @@ else
 endif
 
 let g:slime_target = "tmux"
-	let g:slime_python_ipython = 1
+let g:slime_python_ipython = 1
 
 let g:tmuxline_theme = 'vim_statusline_2'
 let g:airline#extensions#tmuxline#enabled = 0
@@ -303,7 +303,7 @@ let g:tmuxline_preset = {
 	\'x'    : '%a',
 	\'y'    : '#W %R',
 	\'z'    : '#H'
-}
+	\}
 
 "
 " STATUSLINE
