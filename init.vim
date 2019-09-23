@@ -41,8 +41,6 @@ if has("gui_running")
 	    set guifont=Fira Code\ 10
 endif
 
-colo koehler
-hi Normal guibg=NONE ctermbg=NONE
 
 "
 " PLUG
@@ -79,8 +77,8 @@ Plug 'chrisbra/csv.vim'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'airblade/vim-gitgutter'
 Plug 'benmills/vimux'
 Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
@@ -111,7 +109,20 @@ Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'alvan/vim-closetag'
 Plug 'jpalardy/vim-slime'
 
+" Colorschemes
+Plug 'nightsense/snow'
+Plug 'nightsense/cosmic_latte'
+
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'octol/vim-cpp-enhanced-highlight'
+
+
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+
+
 call plug#end()
+
 
 "
 " FUNCTIONS
@@ -148,12 +159,27 @@ let g:ctrlp_by_filename = 0
 let g:ctrlp_max_files = 0
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
+"
+" COLORSCHEME
+"
+set background=dark
+
+colo snow
+"colorscheme cosmic_latte
+set termguicolors
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
 " Airline "
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled = 1
-"let g:airline_theme='monochrome'
-let g:airline_theme='minimalist'
+let g:airline_powerline_fonts = 1
+"let g:airline_theme='minimalist'
+let g:airline_theme='snow_dark'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -181,29 +207,14 @@ let g:ale_fixers = {
 \    'scss': ['prettier']
 \}
 
-" \   'python': ['flake8', 'pylint'],
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'vue': ['eslint']
 \}
 
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-" Syntastic "
-" Synt
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_quiet_messages = { "type": "style" }
 
 let g:used_javascript_libs = 'underscore,backbone,react,rambda'
-"call neomake#configure#automake('w')
-
-
 let g:deoplete#enable_at_startup = 1
 
 "
@@ -228,6 +239,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 let g:NERDTreeWinSize=30
+let g:NERDTreeLimitedSyntax = 1
+
 
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
@@ -239,15 +252,9 @@ let g:vista#renderer#icons = {
 
 " Lightline
 
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified', 'method' ] ]
-      \ },
-      \ 'component_function': {
-      \   'method': 'NearestMethodOrFunction'
-      \ },
-      \ }
+
+
+hi Normal guibg=NONE ctermbg=NONE
 
 
 let g:comfortable_motion_no_default_key_mappings = 1
@@ -318,7 +325,6 @@ let g:tmuxline_preset = {
 " STATUSLINE
 "
 
-set statusline+=%{NearestMethodOrFunction()}
 set statusline=%{LinterStatus()}
 
 
@@ -354,6 +360,6 @@ nnoremap <A-F0> 10gt
 nnoremap <C-k> :tabnext<CR>
 nnoremap <C-j> :tabprev<CR>
 
-map <C-[> :NERDTreeToggle<CR>
-map <C-]> :Vista!!<CR>
+nnoremap <C-[> :NERDTreeToggle<CR>
+nnoremap <C-]> :Vista!!<CR>
 

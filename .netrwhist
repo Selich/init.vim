@@ -1,7 +1,4 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/home/selic'
-let g:netrw_dirhist_2='/home/selic/.nvim'
-let g:netrw_dirhist_3='/home/selic'
-let g:netrw_dirhist_4='/home/selic/.vim'
-let g:netrw_dirhist_5='/home/selic/.vim/bundle'
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/home/selic/Projects'
+let g:netrw_dirhist_2='/home/selic/Projects/Typhoon-HIL-Framework'
