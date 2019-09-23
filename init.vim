@@ -7,7 +7,7 @@ set encoding=utf-8
 set novisualbell
 set noerrorbells
 
-" set colorscheme="industry"
+
 set number
 set numberwidth=5
 set scrolloff=8
@@ -41,6 +41,9 @@ if has("gui_running")
 	    set guifont=Fira Code\ 10
 endif
 
+colo koehler
+hi Normal guibg=NONE ctermbg=NONE
+
 "
 " PLUG
 "
@@ -50,7 +53,7 @@ call plug#begin('~/.nvim/plugged')
 Plug 'kien/ctrlp.vim'
 Plug 'junegunn/vim-easy-align'
 "Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'neomake/neomake'
+"Plug 'neomake/neomake'
 Plug 'sonph/onehalf'
 Plug 'ap/vim-css-color'
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -83,6 +86,7 @@ Plug 'spolu/dwm.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'edkolev/tmuxline.vim'
 
@@ -197,7 +201,7 @@ let g:ale_linters = {
 "let g:syntastic_quiet_messages = { "type": "style" }
 
 let g:used_javascript_libs = 'underscore,backbone,react,rambda'
-call neomake#configure#automake('w')
+"call neomake#configure#automake('w')
 
 
 let g:deoplete#enable_at_startup = 1
@@ -214,11 +218,16 @@ let g:user_emmet_settings = {
   \}
 
 "autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+"
+" AUTOCMD
+"
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+let g:NERDTreeWinSize=30
 
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
@@ -330,8 +339,6 @@ nnoremap <silent> gr :ALEFindReferences<CR>
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
-map <C-\> :NERDTreeToggle<CR>
-map <C-]> :Vista!!<CR>
 
 nnoremap <A-F1> 1gt
 nnoremap <A-F2> 2gt
@@ -347,5 +354,6 @@ nnoremap <A-F0> 10gt
 nnoremap <C-k> :tabnext<CR>
 nnoremap <C-j> :tabprev<CR>
 
-
+map <C-[> :NERDTreeToggle<CR>
+map <C-]> :Vista!!<CR>
 
