@@ -1,22 +1,16 @@
 syntax on
-set number
 set tabstop=4
 set softtabstop=0
 set shiftwidth=4
 set encoding=utf-8
 set novisualbell
 set noerrorbells
-
-
-set number
 set numberwidth=5
 set scrolloff=8
 set sidescrolloff=16
 set mouse=a
 set browsedir=buffer                  " browse files in same dir as open file
-
 set noswapfile
-
 set nowritebackup
 set nobackup
 set backupcopy=yes
@@ -41,7 +35,6 @@ if has("gui_running")
 	    set guifont=Fira Code\ 10
 endif
 
-
 "
 " PLUG
 "
@@ -65,9 +58,11 @@ Plug 'othree/jspc.vim'
 Plug 'othree/yajs.vim'
 Plug 'fatih/vim-go'
 Plug 'ryanoasis/vim-devicons'
+
 Plug 'moll/vim-node'
+Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'jdkanani/vim-material-theme'
+
 Plug 'mattn/emmet-vim'
 Plug 'skywind3000/asyncrun.vim'
 "Plug 'vim-syntastic/syntastic'
@@ -85,6 +80,11 @@ Plug 'liuchengxu/vista.vim'
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'junegunn/rainbow_parentheses.vim'
+
+
+"Plug 'davidhalter/jedi-vim'
+
 
 Plug 'edkolev/tmuxline.vim'
 
@@ -110,8 +110,12 @@ Plug 'alvan/vim-closetag'
 Plug 'jpalardy/vim-slime'
 
 " Colorschemes
+Plug 'jdkanani/vim-material-theme'
 Plug 'nightsense/snow'
 Plug 'nightsense/cosmic_latte'
+Plug 'sainnhe/vim-color-atlantis'
+Plug 'arcticicestudio/nord-vim'
+
 
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -151,6 +155,7 @@ endfunction
 "
 
 
+
 " Split term
 let g:split_term_default_shell = "fish"
 
@@ -164,9 +169,12 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 "
 set background=dark
 
-colo snow
-"colorscheme cosmic_latte
 set termguicolors
+colo nord
+"colo atlantis
+"colo snow
+"colo material-theme
+"colorscheme cosmic_latte
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
@@ -177,7 +185,8 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 1
 "let g:airline_theme='minimalist'
-let g:airline_theme='snow_dark'
+"let g:airline_theme='snow_dark'
+let g:airline_theme='nord'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
@@ -260,39 +269,21 @@ hi Normal guibg=NONE ctermbg=NONE
 let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_impulse_multiplier = 1
 
-" loading the plugin
 let g:webdevicons_enable = 1
-" adding the flags to NERDTree
 let g:webdevicons_enable_nerdtree = 1
-" adding the custom source to unite
 let g:webdevicons_enable_unite = 1
-" adding the column to vimfiler
 let g:webdevicons_enable_vimfiler = 1
-" adding to vim-airline's tabline
 let g:webdevicons_enable_airline_tabline = 1
-" adding to vim-airline's statusline
 let g:webdevicons_enable_airline_statusline = 1
-" ctrlp glyphs
 let g:webdevicons_enable_ctrlp = 1
-" adding to vim-startify screen
 let g:webdevicons_enable_startify = 1
-" adding to flagship's statusline
 let g:webdevicons_enable_flagship_statusline = 1
-" turn on/off file node glyph decorations (not particularly useful)
 let g:WebDevIconsUnicodeDecorateFileNodes = 1
-" use double-width(1) or single-width(0) glyphs
-" only manipulates padding, has no effect on terminal or set(guifont) font
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-" whether or not to show the nerdtree brackets around flags
 let g:webdevicons_conceal_nerdtree_brackets = 1
-" the amount of space to use after the glyph character (default ' ')
 let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
-" Force extra padding in NERDTree so that the filetype icons line up vertically
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-" Adding the custom source to denite
 let g:webdevicons_enable_denite = 1
-
-
 
 " Ranger
 let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
@@ -362,4 +353,11 @@ nnoremap <C-j> :tabprev<CR>
 
 nnoremap <C-[> :NERDTreeToggle<CR>
 nnoremap <C-]> :Vista!!<CR>
+
+nmap <silent> <buffer> gK <Plug>(kite-docs)
+
+" Easy Align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
 
