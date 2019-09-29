@@ -9,15 +9,13 @@ set numberwidth=5
 set scrolloff=8
 set sidescrolloff=16
 set mouse=a
-set browsedir=buffer                  " browse files in same dir as open file
+set browsedir=buffer
 set noswapfile
 set cmdheight=2
 set nobackup
 set nowritebackup
 set shortmess+=c
 set updatetime=300
-
-
 set backupcopy=yes
 set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
 set backupskip+=/private/tmp/*"
@@ -29,10 +27,9 @@ set splitbelow
 set splitright
 set hidden
 set nostartofline
-set synmaxcol=512                     " don't syntax highlight long lines
-set showtabline=0                     " start OFF, toggle =2 to show tabline
-set laststatus=2                      " always show all statuslines
-" This is slow on some terminals and often gets hidden by msgs so leave it off
+set synmaxcol=512
+set showtabline=0
+set laststatus=2
 set noshowcmd
 set noshowmode
 
@@ -63,11 +60,10 @@ Plug 'othree/jspc.vim'
 Plug 'othree/yajs.vim'
 Plug 'fatih/vim-go'
 Plug 'ryanoasis/vim-devicons'
-
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-
+Plug 'chemzqm/vim-jsx-improve'
 Plug 'mattn/emmet-vim'
 Plug 'skywind3000/asyncrun.vim'
 "Plug 'vim-syntastic/syntastic'
@@ -81,6 +77,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'benmills/vimux'
 
+Plug 'maxmellon/vim-jsx-pretty'
+
 "C-N Creates a new window and place it in the master pane [M] & stacks all previous windows in the stacked pane [S]
 "C-Space Focus the current window, that is, place it in the master pane [M] & stacks all other windows in the stacked pane [S]
 Plug 'spolu/dwm.vim'
@@ -90,13 +88,8 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 "Plug 'junegunn/rainbow_parentheses.vim'
 
-
-"Plug 'davidhalter/jedi-vim'
-
-
-Plug 'edkolev/tmuxline.vim'
-
 " Tmux
+Plug 'edkolev/tmuxline.vim'
 Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -125,17 +118,10 @@ Plug 'sainnhe/vim-color-atlantis'
 Plug 'arcticicestudio/nord-vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}
 
-
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'octol/vim-cpp-enhanced-highlight'
-
-
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-
-
 call plug#end()
-
 
 "
 " FUNCTIONS
@@ -143,7 +129,6 @@ call plug#end()
 
 function! LinterStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
-
     let l:all_errors = l:counts.error + l:counts.style_error
     let l:all_non_errors = l:counts.total - l:all_errors
 
@@ -158,12 +143,9 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
-
 "
 " GLOBALS
 "
-
-
 
 " Split term
 let g:split_term_default_shell = "fish"
@@ -184,6 +166,8 @@ colo nord
 "colo snow
 "colo material-theme
 "colorscheme cosmic_latte
+hi Normal guibg=NONE ctermbg=NONE
+
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
@@ -219,10 +203,11 @@ let g:ale_linters = {
 \   'vue':        ['eslint']
 \}
 
-
-
 let g:used_javascript_libs = 'underscore,backbone,react,rambda'
 let g:deoplete#enable_at_startup = 1
+
+
+let g:jsx_ext_required = 0
 
 "
 " EMMET
@@ -245,9 +230,12 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
+" NERDTree
+
 let g:NERDTreeWinSize=30
 let g:NERDTreeLimitedSyntax = 1
 
+" Vista
 
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
@@ -257,16 +245,10 @@ let g:vista#renderer#icons = {
 \  }
 
 
-" Lightline
-
-
-
-hi Normal guibg=NONE ctermbg=NONE
-
-
 let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_impulse_multiplier = 1
 
+" WebDevIcons
 let g:webdevicons_enable = 1
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_enable_unite = 1
@@ -313,14 +295,11 @@ let g:tmuxline_preset = {
 "
 " STATUSLINE
 "
-
 set statusline=%{LinterStatus()}
-
 
 "
 " MAPPING
 "
-
 nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
 nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
 nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
@@ -358,16 +337,9 @@ nmap <silent> <buffer> gK <Plug>(kite-docs)
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-
 " COC
-" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -390,54 +362,32 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
-
-" Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
-  " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Create mappings for function text object, requires document symbols feature of
 
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap <silent> <C-d> <Plug>(coc-range-select)
-xmap <silent> <C-d> <Plug>(coc-range-select)
-
-" Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -460,4 +410,8 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='nord'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+
+let g:vim_jsx_pretty_colorful_config = 1 " default 0
+let g:vim_jsx_pretty_highlight_close_tag = 1
+
 
