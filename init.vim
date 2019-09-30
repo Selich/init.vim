@@ -52,18 +52,31 @@ Plug 'kien/ctrlp.vim'
 Plug 'ap/vim-css-color'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+
+" Linters and Autocompletes
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+
+Plug 'fatih/vim-go'
+Plug 'ryanoasis/vim-devicons'
+
+
+" JS
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'othree/jspc.vim'
 Plug 'othree/yajs.vim'
-Plug 'fatih/vim-go'
-Plug 'ryanoasis/vim-devicons'
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'chemzqm/vim-jsx-improve'
+Plug 'maxmellon/vim-jsx-pretty'
+
+" Python
+Plug 'alvan/vim-closetag'
+Plug 'jpalardy/vim-slime'
+
 Plug 'mattn/emmet-vim'
 Plug 'skywind3000/asyncrun.vim'
 "Plug 'vim-syntastic/syntastic'
@@ -72,17 +85,23 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'chrisbra/csv.vim'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'plytophogy/vim-virtualenv'
+
+" Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+
 Plug 'airblade/vim-gitgutter'
 Plug 'benmills/vimux'
-
-Plug 'maxmellon/vim-jsx-pretty'
 
 "C-N Creates a new window and place it in the master pane [M] & stacks all previous windows in the stacked pane [S]
 "C-Space Focus the current window, that is, place it in the master pane [M] & stacks all other windows in the stacked pane [S]
 Plug 'spolu/dwm.vim'
+
+
+" Definition vars
 Plug 'liuchengxu/vista.vim'
+
 Plug 'rbgrouleff/bclose.vim'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -99,20 +118,16 @@ Plug 'vimlab/split-term.vim'
 
 " Formatting
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
+" Plug 'sbdchd/neoformat', {'on': 'Neoformat'}
 Plug 'junegunn/vim-easy-align'
 
 Plug 'danro/rename.vim', { 'on': 'Rename' }
-Plug 'rakr/vim-one'
 Plug 'vimlab/split-term.vim'
-" Python
-Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
-Plug 'alvan/vim-closetag'
-Plug 'jpalardy/vim-slime'
 
 " Colorschemes
 Plug 'jdkanani/vim-material-theme'
 Plug 'nightsense/snow'
+Plug 'rakr/vim-one'
 Plug 'nightsense/cosmic_latte'
 Plug 'sainnhe/vim-color-atlantis'
 Plug 'arcticicestudio/nord-vim'
@@ -182,8 +197,11 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_completion_enabled = 1
 let g:ale_set_highlights = 0
+let g:ale_linters_explicit = 1
+
 
 let g:ale_warn_about_trailing_whitespace = 0
+let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_list_window_size = 5
@@ -193,7 +211,7 @@ let g:ale_list_window_size = 5
 "
 let g:ale_fixers = {
 \   '*':          ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint', 'prettier'],
+\   'javascript': ['prettier', 'eslint'],
 \   'vue':        ['eslint'],
 \   'scss':       ['prettier']
 \}
@@ -202,6 +220,11 @@ let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'vue':        ['eslint']
 \}
+
+
+let b:ale_linters = ['flake8', 'pylint']
+let b:ale_fixers = ['autopep8', 'yapf']
+let b:ale_warn_about_trailing_whitespace = 0
 
 let g:used_javascript_libs = 'underscore,backbone,react,rambda'
 let g:deoplete#enable_at_startup = 1
@@ -399,6 +422,10 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
+
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+
 " Airline "
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
@@ -415,3 +442,23 @@ let g:vim_jsx_pretty_colorful_config = 1 " default 0
 let g:vim_jsx_pretty_highlight_close_tag = 1
 
 
+
+" Close tag
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_filetypes = 'html,xhtml,phtml'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ }
+
+let g:closetag_shortcut = '>'
+let g:closetag_close_shortcut = '<leader>>'
+
+
+" Whitespaces
+let g:better_whitespace_guicolor='grey'
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
