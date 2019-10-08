@@ -1,5 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/home/selic/Projects'
-let g:netrw_dirhist_2='/home/selic/Projects/Typhoon-HIL-Framework'
-let g:netrw_dirhist_3='/home/selic/Projects/Typhoon-HIL-Framework/client/src/components'
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src'
+let g:netrw_dirhist_2='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src/main'
+let g:netrw_dirhist_3='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src/main/scala'
+let g:netrw_dirhist_4='/home/selic/Projects/blog'
+let g:netrw_dirhist_5='/home/selic/Projects/lambdaworks-conEEct-challenge/cli'
+let g:netrw_dirhist_6='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src'
+let g:netrw_dirhist_7='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src/main'
+let g:netrw_dirhist_8='/home/selic/Projects/lambdaworks-conEEct-challenge/cli/src/main/scala'

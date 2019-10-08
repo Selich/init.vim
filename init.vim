@@ -124,6 +124,10 @@ Plug 'junegunn/vim-easy-align'
 Plug 'danro/rename.vim', { 'on': 'Rename' }
 Plug 'vimlab/split-term.vim'
 
+
+" Scala
+Plug 'derekwyatt/vim-scala'
+
 " Colorschemes
 Plug 'jdkanani/vim-material-theme'
 Plug 'nightsense/snow'
@@ -136,6 +140,8 @@ Plug 'sonph/onehalf', {'rtp': 'vim/'}
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
 "
@@ -248,9 +254,8 @@ let g:user_emmet_settings = {
 " AUTOCMD
 "
 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 " NERDTree
@@ -351,10 +356,11 @@ nnoremap <A-F0> 10gt
 nnoremap <C-k> :tabnext<CR>
 nnoremap <C-j> :tabprev<CR>
 
-nnoremap <C-[> :NERDTreeToggle<CR>
+nnoremap <C-\> :NERDTreeToggle<CR>
 nnoremap <C-]> :Vista!!<CR>
 
 nmap <silent> <buffer> gK <Plug>(kite-docs)
+
 
 " Easy Align
 xmap ga <Plug>(EasyAlign)
@@ -391,6 +397,7 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
+"""
 augroup mygroup
   autocmd!
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -426,7 +433,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 
-" Airline "
+" Airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
@@ -440,8 +447,6 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 let g:vim_jsx_pretty_colorful_config = 1 " default 0
 let g:vim_jsx_pretty_highlight_close_tag = 1
-
-
 
 " Close tag
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
@@ -457,8 +462,13 @@ let g:closetag_regions = {
 let g:closetag_shortcut = '>'
 let g:closetag_close_shortcut = '<leader>>'
 
-
 " Whitespaces
 let g:better_whitespace_guicolor='grey'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+
+" Kite
+let g:kite_tab_complete=1
+
+filetype plugin on
+
